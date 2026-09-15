@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FA Juniors — ابتكار اليوم، غذاء الغد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   Palette pulls two things directly from FA Juniors' own materials:
+   the deep-forest/leaf greens of their wordmark, and the warm
+   harvest gold + clay accents echoed from the "World Food Day"
+   moodboard. Diagonal wedge cuts are lifted from their own pitch
+   deck (bottom-corner color blocks) so the site reads as a
+   continuation of the brand, not a generic template.
+   Typeface: Cairo only — one family, weight-driven hierarchy, so
+   the Arabic/English toggle never causes a visual identity shift.
+   ============================================================ */
+:root{
+  --forest-900:#08210f;
+  --forest-700:#0f4023;
+  --leaf-600:#1f7a41;
+  --sprout-400:#7ecb8f;
+  --gold-500:#e2a63b;
+  --clay-500:#c85a2b;
+  --cream-100:#f7f4e7;
+
+  --bg:var(--cream-100);
+  --bg-alt:#eef0e2;
+  --surface:#ffffff;
+  --text:#122317;
+  --text-muted:#4b5c50;
+  --border:#dcdfcd;
+  --header-bg:rgba(247,244,231,0.9);
+  --shadow:0 10px 30px -12px rgba(8,33,15,0.18);
+  --radius-md:14px;
+  --radius-lg:22px;
+  --transition:200ms ease;
+  --accent-grad:linear-gradient(135deg,var(--leaf-600),var(--forest-700));
+}
+[data-theme="dark"]{
+  --bg:#081a0f;
+  --bg-alt:#0d2416;
+  --surface:#0f2a19;
+  --text:#eef3ec;
+  --text-muted:#9db5a4;
+  --border:#1c3d27;
+  --header-bg:rgba(8,26,15,0.85);
+  --shadow:0 10px 30px -12px rgba(0,0,0,0.5);
+  --cream-100:#0f2a19;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Cairo',Tahoma,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:background var(--transition),color var(--transition);
+  min-height:100vh;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
+h1,h2,h3,h4{margin:0 0 .5em;font-weight:800;line-height:1.25;}
+p{line-height:1.8;margin:0 0 1em;color:var(--text-muted);}
+.container{max-width:1180px;margin-inline:auto;padding-inline:20px;}
+.hidden{display:none !important;}
+::selection{background:var(--sprout-400);color:var(--forest-900);}
+
+/* ---------- Header ---------- */
+header.site-header{
+  position:sticky;top:0;z-index:50;
+  background:var(--header-bg);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.nav-wrap{display:flex;align-items:center;justify-content:space-between;padding-block:12px;gap:14px;}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem;}
+.brand-mark{position:relative;height:38px;width:auto;flex:none;display:inline-flex;}
+.brand-mark img{height:100%;width:auto;display:block;object-fit:contain;}
+nav.main-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+nav.main-links a{
+  padding:8px 14px;border-radius:999px;font-weight:600;font-size:.92rem;
+  color:var(--text-muted);transition:var(--transition);white-space:nowrap;
+}
+nav.main-links a:hover{background:var(--bg-alt);color:var(--text);}
+nav.main-links a.active{background:var(--leaf-600);color:#fff;}
+.header-tools{display:flex;align-items:center;gap:8px;}
+.icon-btn{
+  width:38px;height:38px;border-radius:999px;border:1px solid var(--border);
+  background:var(--surface);display:flex;align-items:center;justify-content:center;
+  font-size:1rem;transition:var(--transition);
+}
+.icon-btn:hover{border-color:var(--leaf-600);transform:translateY(-1px);}
+.lang-btn{width:auto;padding:0 12px;font-weight:700;font-size:.8rem;letter-spacing:.03em;}
+.hamburger{display:none;}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;
+  border:none;font-weight:700;font-size:.94rem;transition:var(--transition);
+}
+.btn-primary{background:var(--accent-grad);color:#fff;box-shadow:0 8px 20px -8px rgba(31,122,65,.55);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 24px -8px rgba(31,122,65,.6);}
+.btn-outline{background:transparent;border:2px solid var(--leaf-600);color:var(--leaf-600);}
+.btn-outline:hover{background:var(--leaf-600);color:#fff;}
+.btn-ghost{background:var(--bg-alt);color:var(--text);}
+.btn-ghost:hover{background:var(--border);}
+.btn-danger{background:#b9412a;color:#fff;}
+.btn-sm{padding:7px 14px;font-size:.82rem;border-radius:999px;}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+
+/* ---------- Diagonal wedge motif (reused brand device) ---------- */
+.wedge-corner{position:relative;overflow:hidden;}
+.wedge-corner::after{
+  content:'';position:absolute;inset-inline-end:-6%;bottom:-18%;width:46%;height:70%;
+  background:var(--sprout-400);opacity:.25;
+  clip-path:polygon(30% 0,100% 0,100% 100%,0 100%);
+  pointer-events:none;
+}
+.leaf-fold{position:absolute;top:0;inset-inline-end:0;width:26px;height:26px;
+  background:var(--gold-500);clip-path:polygon(0 0,100% 0,100% 100%);}
+
+/* ---------- Hero ---------- */
+.hero{
+  background:var(--accent-grad);color:#fff;padding-block:64px 80px;position:relative;overflow:hidden;
+  clip-path:polygon(0 0,100% 0,100% 92%,0 100%);
+}
+.hero::before{
+  content:'';position:absolute;inset-inline-end:-10%;top:-20%;width:60%;height:140%;
+  background:radial-gradient(circle,rgba(255,255,255,.12),transparent 60%);
+}
+.hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center;position:relative;}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);
+  padding:6px 14px;border-radius:999px;font-size:.8rem;font-weight:700;letter-spacing:.04em;margin-bottom:16px;
+}
+.hero h1{font-size:clamp(2rem,4.2vw,3.1rem);color:#fff;margin-bottom:14px;}
+.hero .tagline{font-size:1.15rem;font-weight:600;color:var(--gold-500);margin-bottom:16px;}
+.hero p.lead{color:rgba(255,255,255,.86);font-size:1.05rem;max-width:52ch;}
+.hero-actions{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;}
+.hero-badge-logo{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-lg);
+  padding:34px;display:flex;align-items:center;justify-content:center;
+}
+.hero-badge-logo img{width:100%;max-width:230px;height:auto;}
+
+/* ---------- Stats ---------- */
+.stats-section{padding-block:56px;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-bottom:40px;}
+.stat-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);
+  padding:24px 22px;box-shadow:var(--shadow);
+}
+.stat-card .num{font-size:2.4rem;font-weight:900;color:var(--leaf-600);display:block;}
+.stat-card .lbl{font-size:.86rem;font-weight:700;color:var(--text-muted);}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.chart-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);
+  padding:22px;box-shadow:var(--shadow);
+}
+.chart-card h3{font-size:1rem;}
+.chart-card .chart-wrap{position:relative;height:230px;}
+
+/* ---------- Section titles ---------- */
+.section-title{text-align:center;margin-bottom:34px;}
+.section-title h2{font-size:clamp(1.6rem,3vw,2.2rem);}
+.section-title p{max-width:60ch;margin-inline:auto;}
+
+/* ---------- Gallery ---------- */
+.gallery-toolbar{
+  display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);
+  padding:16px 18px;margin-bottom:28px;box-shadow:var(--shadow);
+}
+.search-box{position:relative;flex:1;min-width:220px;}
+.search-box input{
+  width:100%;padding:11px 16px;padding-inline-start:38px;border-radius:999px;border:1px solid var(--border);
+  background:var(--bg);color:var(--text);font-family:inherit;font-size:.92rem;
+}
+.search-box::before{content:'🔍';position:absolute;inset-inline-start:14px;top:50%;transform:translateY(-50%);font-size:.85rem;}
+select.year-filter{
+  padding:11px 16px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--text);
+  font-family:inherit;font-weight:600;font-size:.88rem;
+}
+.result-count{font-size:.82rem;color:var(--text-muted);font-weight:600;white-space:nowrap;}
+
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px;}
+.p-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);
+  overflow:hidden;box-shadow:var(--shadow);transition:transform var(--transition),box-shadow var(--transition);
+  display:flex;flex-direction:column;position:relative;
+  animation:cardIn .5s ease both;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.p-card:hover{transform:translateY(-6px);box-shadow:0 18px 34px -14px rgba(8,33,15,0.3);}
+.poster-frame{position:relative;aspect-ratio:4/5;background:var(--bg-alt);overflow:hidden;}
+.poster-frame img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+.p-card:hover .poster-frame img{transform:scale(1.06);}
+.poster-frame .leaf-fold{width:22px;height:22px;}
+.poster-frame.img-broken img{display:none;}
+.poster-frame.img-broken::before{
+  content:'🌱';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:2.4rem;background:var(--bg-alt);
+}
+.p-body{padding:16px;display:flex;gap:12px;align-items:center;}
+.avatar{
+  width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:.95rem;background:var(--leaf-600);overflow:hidden;
+}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.p-info{min-width:0;}
+.p-info .p-name{font-weight:800;font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.p-info .p-entity{font-size:.82rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.year-chip{
+  position:absolute;top:10px;inset-inline-start:10px;background:rgba(8,33,15,.75);color:#fff;
+  font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px;backdrop-filter:blur(4px);
+}
+.card-link{position:absolute;inset:0;z-index:2;}
+.empty-state{
+  text-align:center;padding:60px 20px;background:var(--surface);border:1px dashed var(--border);
+  border-radius:var(--radius-md);
+}
+.empty-state .em{font-size:2.4rem;margin-bottom:10px;}
+
+/* ---------- Details page ---------- */
+.details-wrap{padding-block:40px;}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--leaf-600);margin-bottom:22px;}
+.details-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:34px;align-items:start;}
+.details-poster{border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);background:var(--bg-alt);aspect-ratio:4/5;position:relative;}
+.details-poster img{width:100%;height:100%;object-fit:cover;}
+.details-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:30px;box-shadow:var(--shadow);}
+.details-head{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+.avatar-lg{width:64px;height:64px;font-size:1.3rem;}
+.meta-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);font-size:.92rem;}
+.meta-row:last-of-type{border-bottom:none;}
+.meta-row .k{color:var(--text-muted);font-weight:700;}
+.meta-row .v{font-weight:600;text-align:end;}
+.bio-block{margin-top:18px;}
+.bio-block h4{font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);}
+
+/* ---------- About page ---------- */
+.about-hero{padding-block:50px;text-align:center;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:40px;}
+.about-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:26px;box-shadow:var(--shadow);}
+.about-card h3{color:var(--leaf-600);}
+.archive-note{
+  background:var(--forest-700);color:#fff;border-radius:var(--radius-lg);padding:30px;text-align:center;
+  margin-block:44px;
+}
+.archive-note h3{color:var(--gold-500);}
+.archive-note p{color:rgba(255,255,255,.88);max-width:60ch;margin-inline:auto;}
+.org-chart{display:grid;place-items:center;gap:14px;margin-block:20px;}
+.org-node{background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;padding:10px 22px;font-weight:700;font-size:.88rem;}
+.org-level{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+.supporters-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-block:20px;}
+.supporter-badge{
+  display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius-md);padding:20px 28px;min-width:160px;box-shadow:var(--shadow);
+}
+.supporter-badge .mark{width:56px;height:56px;border-radius:50%;background:var(--accent-grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;}
+.contact-box{text-align:center;padding-block:20px;}
+
+/* ---------- Forms / Login / Admin ---------- */
+.auth-wrap{min-height:70vh;display:flex;align-items:center;justify-content:center;padding-block:50px;}
+.auth-card{
+  width:100%;max-width:400px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:36px;box-shadow:var(--shadow);
+}
+.auth-card .brand-mark{height:56px;width:auto;margin-inline:auto;}
+.field{margin-bottom:16px;}
+.required-star{color:#c0392b;font-weight:800;}
+.field label{display:block;font-size:.84rem;font-weight:700;margin-bottom:6px;color:var(--text-muted);}
+.field input,.field select,.field textarea{
+  width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--border);
+  background:var(--bg);color:var(--text);font-family:inherit;font-size:.92rem;
+}
+.field textarea{min-height:90px;resize:vertical;}
+.form-error{color:#c0392b;font-size:.85rem;font-weight:700;margin-bottom:10px;}
+.hint{font-size:.78rem;color:var(--text-muted);margin-top:10px;text-align:center;}
+
+.admin-shell{padding-block:36px;display:grid;grid-template-columns:220px 1fr;gap:24px;}
+.admin-sidebar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;box-shadow:var(--shadow);height:fit-content;}
+.admin-sidebar button{
+  display:flex;width:100%;text-align:start;padding:11px 14px;border-radius:10px;border:none;background:transparent;
+  color:var(--text-muted);font-weight:700;font-size:.9rem;margin-bottom:4px;transition:var(--transition);
+}
+.admin-sidebar button.active{background:var(--leaf-600);color:#fff;}
+.admin-sidebar button:hover:not(.active){background:var(--bg-alt);}
+.admin-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:26px;box-shadow:var(--shadow);min-height:400px;}
+.admin-panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:12px;flex-wrap:wrap;}
+table.admin-table{width:100%;border-collapse:collapse;font-size:.88rem;}
+table.admin-table th,table.admin-table td{padding:10px 12px;border-bottom:1px solid var(--border);text-align:start;}
+table.admin-table th{color:var(--text-muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.03em;}
+table.admin-table tr:hover td{background:var(--bg-alt);}
+.row-actions{display:flex;gap:6px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid .span2{grid-column:1/-1;}
+.import-drop{
+  border:2px dashed var(--border);border-radius:var(--radius-md);padding:34px;text-align:center;
+  background:var(--bg-alt);
+}
+.import-drop input[type=file]{margin-top:14px;}
+/* ---------- Hidden admin gate ---------- */
+.admin-gate-handle{
+  position:fixed;top:50%;right:0;transform:translateY(-50%);
+  width:14px;height:56px;background:var(--bg-alt);border:1px solid var(--border);border-inline-end:none;
+  border-radius:10px 0 0 10px;display:flex;align-items:center;justify-content:center;
+  color:var(--text-muted);font-size:.8rem;opacity:.3;z-index:120;cursor:pointer;
+  touch-action:none;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;
+  transition:opacity var(--transition);
+}
+.admin-gate-handle:hover{opacity:.65;}
+.admin-gate-overlay{
+  position:fixed;inset:0;z-index:300;background:rgba(8,33,15,.6);backdrop-filter:blur(3px);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.admin-gate-card{
+  position:relative;width:100%;max-width:360px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:34px 30px;box-shadow:var(--shadow);
+}
+.admin-gate-close{position:absolute;top:10px;inset-inline-end:10px;}
+
+/* ---------- Footer ---------- */
+footer{background:var(--forest-900);color:rgba(255,255,255,.75);padding-block:44px 26px;margin-top:60px;position:relative;}
+.footer-grid{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start;}
+.footer-brand{color:#fff;font-weight:800;display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.footer-tagline{color:var(--gold-500);font-weight:700;font-size:.92rem;}
+footer .footer-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:28px;padding-top:18px;font-size:.8rem;text-align:center;}
+
+/* ---------- Toast ---------- */
+#toast{
+  position:fixed;bottom:22px;inset-inline:0;display:flex;justify-content:center;z-index:200;pointer-events:none;
+}
+#toast .msg{
+  background:var(--forest-900);color:#fff;padding:12px 22px;border-radius:999px;font-weight:700;font-size:.88rem;
+  box-shadow:var(--shadow);transform:translateY(20px);opacity:0;transition:all .3s ease;
+}
+#toast .msg.show{transform:translateY(0);opacity:1;}
+
+/* ---------- Responsive ---------- */
+@media (max-width:900px){
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-badge-logo{max-width:220px;margin-inline:auto;}
+  .charts-grid{grid-template-columns:1fr;}
+  .about-grid{grid-template-columns:1fr;}
+  .details-grid{grid-template-columns:1fr;}
+  .admin-shell{grid-template-columns:1fr;}
+  .admin-sidebar{display:flex;overflow-x:auto;gap:4px;}
+  .admin-sidebar button{white-space:nowrap;width:auto;}
+  .form-grid{grid-template-columns:1fr;}
+}
+@media (max-width:640px){
+  nav.main-links{display:none;position:absolute;top:100%;inset-inline:0;background:var(--surface);
+    flex-direction:column;align-items:stretch;padding:12px;border-bottom:1px solid var(--border);box-shadow:var(--shadow);}
+  nav.main-links.open{display:flex;}
+  nav.main-links a{text-align:center;}
+  .hamburger{display:flex;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a href="#home" class="brand" data-i18n-brand>
+      <span class="brand-mark"><img id="headerLogoImg" src="" alt="FA Juniors"></span>
+      <span>FA Juniors</span>
+    </a>
+    <nav class="main-links" id="mainNav">
+      <a href="#home" data-route="home" data-t="nav_home">Home</a>
+      <a href="#about" data-route="about" data-t="nav_about">About</a>
+    </nav>
+    <div class="header-tools">
+      <button class="icon-btn hamburger" id="hamburgerBtn" aria-label="menu">☰</button>
+      <button class="icon-btn" id="themeToggle" title="Theme">🌙</button>
+      <button class="icon-btn lang-btn" id="langToggle" title="Language">EN</button>
+    </div>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand"><span class="brand-mark" style="height:26px;"><img src="" id="footerLogoImg" alt="FA Juniors"></span> FA Juniors</div>
+      <div class="footer-tagline" data-t="tagline">Today's Juniors, tomorrow's leaders</div>
+    </div>
+    <div>
+      <p style="margin:0;color:rgba(255,255,255,.7);font-size:.9rem;" data-t="footer_supervised">Under the supervision of the Food and Agriculture Organization (FAO)</p>
+      <p style="margin:0;color:rgba(255,255,255,.7);font-size:.9rem;">📧 fajuniorsteam@gmail.com</p>
+      <p style="margin:0;color:rgba(255,255,255,.7);font-size:.9rem;">📘 <a href="https://www.facebook.com/profile.php?id=61574361587772" target="_blank" rel="noopener" style="color:rgba(255,255,255,.85);">Facebook</a></p>
+    </div>
+  </div>
+  <div class="container footer-bottom" data-t="footer_rights">© FA Juniors — Participant Archive</div>
+</footer>
+
+<div id="toast"><div class="msg" id="toastMsg"></div></div>
+
+<!-- Hidden admin gate: reached only via long-press + drag-left on this
+     edge handle. It carries no label or tooltip on purpose. -->
+<div id="adminGateHandle" class="admin-gate-handle" aria-hidden="true" draggable="false">‹</div>
+
+<div id="adminGateOverlay" class="admin-gate-overlay hidden">
+  <div class="admin-gate-card wedge-corner">
+    <button type="button" id="adminGateCloseBtn" class="icon-btn admin-gate-close" aria-label="close">✕</button>
+    <div class="brand-mark" style="display:block;width:fit-content;height:52px;margin-inline:auto;margin-bottom:14px;">
+      <img id="adminGateLogoImg" src="" alt="FA Juniors">
+    </div>
+    <h2 style="text-align:center;" data-t="login_title">Admin Access</h2>
+    <div id="adminGateError" class="form-error hidden" data-t="login_error"></div>
+    <form id="adminGateForm">
+      <div class="field"><label data-t="login_password">Password</label><input type="password" id="adminGatePass" autocomplete="current-password" required></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" data-t="login_submit">Log in</button>
+    </form>
+  </div>
+</div>
+
+<script>
+/* ==================================================================
+   FA JUNIORS — PARTICIPANT ARCHIVE
+   Single-file app: no build step, no backend. Open in any browser.
+   Data lives in localStorage. See the i18n dict for all UI copy.
+
+   NOTE ON "LOGIN PROTECTION": this is a static file with no server,
+   so the admin login is a UI gate only — it stops casual browsing of
+   the dashboard, but anyone with browser dev-tools access can read
+   localStorage or open the console. Do not treat this as real
+   security for sensitive data.
+   ================================================================== */
+
+/* ---------------- brand logo (real artwork, embedded as data URIs) ---------------- */
+const LOGO_GREEN = 'data:image/png;base64,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';
+const LOGO_WHITE = 'data:image/png;base64,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';
+
+/* ---------------- i18n ---------------- */
+const I18N = {
+  ar:{
+    nav_home:'الرئيسية', nav_about:'من نحن',
+    nav_admin:'لوحة التحكم', nav_logout:'تسجيل الخروج',
+    footer_supervised:'بمناسبة اليوم العالمي للغذاء — منظمة الأغذية والزراعة (الفاو)',
+    footer_rights:'© FA Juniors',
+    contest_eyebrow:'🌍 مسابقة الفاو — اليوم العالمي للغذاء',
+    contest_slogan:'ابتكار اليوم، غذاء الغد',
+    contest_lead:'مسابقة عالمية تنظمها منظمة الأغذية والزراعة للأمم المتحدة (الفاو)، للتركيز على دور الابتكار في توفير الغذاء وحماية الكوكب.',
+    apply_btn:'قدّم الآن', learn_more_btn:'تعرف علينا',
+    info_organizer_label:'الجهة المنظمة', info_organizer_value:'منظمة الأغذية والزراعة للأمم المتحدة (FAO)',
+    info_age_label:'الفئة العمرية', info_age_value:'من 5 إلى 19 عامًا',
+    info_deadline_label:'آخر موعد للتقديم', info_deadline_value:'6 نوفمبر 2026',
+    prizes_title:'الجوائز', prizes_intro:'الفائزون في كل فئة عمرية يحصلون على:',
+    prize_cert:'شهادة تقدير', prize_giftbag:'حقيبة هدايا مفاجئة',
+    prize_mention:'ذكر الاسم على موقع يوم الأغذية العالمي وقنوات التواصل الاجتماعي الخاصة بالمنظمة',
+    age_cat_1:'5–8 سنوات', age_cat_2:'9–12 سنة', age_cat_3:'13–15 سنة', age_cat_4:'16–19 سنة',
+    about_hero_title:'قصتنا', about_hero_lead:'فريق توعوي تعليمي تحت إشراف منظمة الأغذية والزراعة (الفاو)',
+    about_us_title:'من نحن', about_us_text:'FA Juniors هو فريق توعوي تعليمي يهدف إلى نشر الوعي بقضايا الزراعة والأمن الغذائي والاستدامة بين طلاب المدارس في مختلف المراحل الدراسية، من خلال محتوى تعليمي تفاعلي وأنشطة عملية مبسطة تناسب الفئات العمرية المختلفة.',
+    vision_title:'الرؤية', vision_text:'تمكين أكثر من 5,000 طالب خلال 5 سنوات من خلال محتوى تعليمي تفاعلي، وأنشطة عملية في الزراعة والأمن الغذائي، وبناء شراكات تعليمية فاعلة.',
+    mission_title:'الرسالة', mission_text:'نشر الوعي الزراعي والأمن الغذائي بين طلاب المدارس من خلال أنشطة تفاعلية ومحتوى مبسط يشجع على الاستدامة والابتكار.',
+    team_title:'هيكل الفريق',
+    role_president:'الرئيس', role_vp:'نائب الرئيس', role_hr:'لجنة الموارد البشرية', role_social:'لجنة السوشيال ميديا',
+    role_event:'إدارة الفعاليات', role_ac:'اللجنة الأكاديمية', role_headvice:'رئيس ونائب',
+    supporters_title:'بدعم من',
+    supporter_famodel:'نموذج الأغذية والزراعة', supporter_fao:'منظمة الأغذية والزراعة (الفاو)',
+    contact_title:'تواصل معنا',
+    register_title:'سجّل بياناتك أولًا', register_lead:'الرجاء تسجيل بيانات المبتكر/ المبدع بدقة، علامة * تشير إلى أن هذا السؤال مطلوب.',
+    register_name:'الاسم بالكامل', register_age:'السن', register_email:'البريد الإلكتروني',
+    register_governorate:'المحافظة', register_school:'المدرسة',
+    register_submit:'استكمال التسجيل', register_saving:'جاري الحفظ...',
+    register_required_error:'من فضلك املأ الاسم والبريد الإلكتروني على الأقل.',
+    register_note:'بعد الضغط على "استكمال التسجيل" هيتم تحويلك مباشرة لصفحة التقديم الرسمية على موقع الفاو لإكمال التسجيل هناك.',
+    login_title:'دخول لوحة التحكم', login_password:'كلمة المرور',
+    login_submit:'دخول', login_error:'كلمة المرور غير صحيحة.',
+    admin_title:'لوحة التحكم', admin_welcome:'مرحبًا',
+    stats_title:'إحصائيات التسجيل', stats_total:'إجمالي المسجلين', stats_today:'مسجلين اليوم',
+    stats_daily_title:'التسجيلات خلال آخر 14 يوم', stats_source:'المحافظة', stats_count:'عدد المسجلين',
+    stats_unknown_source:'غير محدد',
+    stats_not_configured:'لسه معملتيش ربط قاعدة البيانات (Supabase) بالموقع — الإحصائيات هتظهر هنا بمجرد إضافة رابط ومفتاح المشروع في الكود.',
+    stats_load_error:'تعذّر تحميل الإحصائيات. تأكدي من صحة رابط ومفتاح Supabase وإعداد دالة get_registration_stats.',
+    stats_view_full_note:'لعرض أسماء وإيميلات المسجلين بالتفصيل، افتحي جدول registrations من لوحة تحكم Supabase مباشرة (Table Editor) — مش من هنا، حفاظًا على خصوصية بيانات المشاركين.',
+    toast_logged_out:'تم تسجيل الخروج.',
+    theme_light:'الوضع الفاتح', theme_dark:'الوضع الداكن'
+  },
+  en:{
+    nav_home:'Home', nav_about:'About',
+    nav_admin:'Dashboard', nav_logout:'Log out',
+    footer_supervised:'For World Food Day — Food and Agriculture Organization (FAO)',
+    footer_rights:'© FA Juniors',
+    contest_eyebrow:'🌍 FAO Contest — World Food Day',
+    contest_slogan:'Innovate today, nourish tomorrow',
+    contest_lead:'A global contest organized by the Food and Agriculture Organization of the United Nations (FAO), highlighting the role of innovation in providing food and protecting the planet.',
+    apply_btn:'Apply Now', learn_more_btn:'Learn about us',
+    info_organizer_label:'Organizer', info_organizer_value:'Food and Agriculture Organization of the United Nations (FAO)',
+    info_age_label:'Age Group', info_age_value:'5 to 19 years old',
+    info_deadline_label:'Application Deadline', info_deadline_value:'November 6, 2026',
+    prizes_title:'Prizes', prizes_intro:'Winners in each age category receive:',
+    prize_cert:'A certificate of appreciation', prize_giftbag:'A surprise gift bag',
+    prize_mention:"A mention on the World Food Day website and the organization's social media channels",
+    age_cat_1:'5–8 years', age_cat_2:'9–12 years', age_cat_3:'13–15 years', age_cat_4:'16–19 years',
+    about_hero_title:'Our Story', about_hero_lead:'An educational awareness team supervised by the Food and Agriculture Organization (FAO)',
+    about_us_title:'About Us', about_us_text:'FA Juniors is an educational awareness team that spreads awareness of agriculture, food security, and sustainability among school students of all grade levels, through interactive educational content and simple hands-on activities suited to different age groups.',
+    vision_title:'Vision', vision_text:'Empowering more than 5,000 students within 5 years through interactive educational content, hands-on agriculture and food-security activities, and effective educational partnerships.',
+    mission_title:'Mission', mission_text:'Spreading agricultural and food-security awareness among school students through interactive activities and simplified content that encourages sustainability and innovation.',
+    team_title:'Team Structure',
+    role_president:'President', role_vp:'Vice President', role_hr:'HR Committee', role_social:'Social Media Committee',
+    role_event:'Event Management', role_ac:'AC Committee', role_headvice:'Head & Vice',
+    supporters_title:'Supported By',
+    supporter_famodel:'Food and Agriculture Model', supporter_fao:'Food and Agriculture Organization (FAO)',
+    contact_title:'Contact Us',
+    register_title:'Register Your Details First', register_lead:"Please enter the innovator's/creator's details accurately. An asterisk (*) indicates a required question.",
+    register_name:'Full Name', register_age:'Age', register_email:'Email',
+    register_governorate:'Governorate', register_school:'School',
+    register_submit:'Continue Registration', register_saving:'Saving...',
+    register_required_error:'Please fill in at least your name and email.',
+    register_note:'After you click "Continue Registration" you will be redirected straight to the official FAO application page to finish registering there.',
+    login_title:'Admin Dashboard Login', login_password:'Password',
+    login_submit:'Log in', login_error:'Incorrect password.',
+    admin_title:'Admin Dashboard', admin_welcome:'Welcome',
+    stats_title:'Registration Statistics', stats_total:'Total Registrants', stats_today:"Today's Registrants",
+    stats_daily_title:'Registrations over the last 14 days', stats_source:'Governorate', stats_count:'Registrants',
+    stats_unknown_source:'Unspecified',
+    stats_not_configured:"The database (Supabase) isn't connected yet — statistics will appear here once the project URL and key are added in the code.",
+    stats_load_error:'Could not load statistics. Check your Supabase URL, key, and the get_registration_stats function setup.',
+    stats_view_full_note:"To see full names and emails, open the registrations table directly in your Supabase dashboard (Table Editor) — not here, to protect participants' privacy.",
+    toast_logged_out:'Logged out.',
+    theme_light:'Light mode', theme_dark:'Dark mode'
+  }
+};
+let LANG = localStorage.getItem('fj_lang') || 'ar';
+function t(key){ return (I18N[LANG] && I18N[LANG][key]) || key; }
+
+/* ---------------- storage helpers ---------------- */
+const LS_KEYS = {session:'fj_session', theme:'fj_theme'};
+function getSession(){ return JSON.parse(sessionStorage.getItem(LS_KEYS.session) || 'null'); }
+function setSession(s){ sessionStorage.setItem(LS_KEYS.session, JSON.stringify(s)); }
+function clearSession(){ sessionStorage.removeItem(LS_KEYS.session); }
+
+function escapeHtml(str){
+  return String(str==null?'':str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ---------------- registration / bridge-link config ----------------
+   1) Put your official FAO application link here (already filled in).
+   2) Put your Supabase project URL + anon public key here (from your
+      Supabase project → Settings → API). Until these two are filled
+      in, the registration form still redirects to the official link
+      after submit — it just can't save the data anywhere yet, and
+      the admin stats tab will show a "not connected" message.
+
+   Required Supabase setup (run once in the SQL Editor):
+
+     create table registrations (
+       id bigint generated by default as identity primary key,
+       created_at timestamptz not null default now(),
+       full_name text not null,
+       age int,
+       email text,
+       governorate text,
+       school text,
+       source text
+     );
+     alter table registrations enable row level security;
+
+     -- the public website is only ever allowed to INSERT a new row.
+     create policy "Allow public insert" on registrations
+       for insert to anon with check (true);
+
+     -- there is deliberately NO public SELECT policy on this table.
+     -- Names, ages and emails of participants (some of them minors,
+     -- ages 5-19) must never be readable through the public anon
+     -- key, since that key is visible in this page's source code.
+     -- To browse the actual list of registrants, open the
+     -- "registrations" table directly in Supabase → Table Editor,
+     -- which requires your own Supabase account login.
+
+     -- the admin panel here only ever reads AGGREGATE numbers
+     -- (counts), never raw names/emails, through this function:
+     create or replace function get_registration_stats()
+     returns json language sql security definer set search_path = public as $$
+       select json_build_object(
+         'total', (select count(*) from registrations),
+         'today', (select count(*) from registrations where created_at::date = current_date),
+         'daily', (select coalesce(json_agg(row_to_json(d)), '[]'::json) from (
+           select created_at::date as day, count(*) as count from registrations
+           where created_at >= current_date - interval '13 days'
+           group by day order by day
+         ) d),
+         'by_governorate', (select coalesce(json_agg(row_to_json(g)), '[]'::json) from (
+           select coalesce(nullif(governorate,''),'غير محدد') as governorate, count(*) as count
+           from registrations group by governorate order by count desc
+         ) g)
+       );
+     $$;
+     grant execute on function get_registration_stats() to anon; */
+const OFFICIAL_LINK = 'https://www.fao.org/world-food-day/contest/ar';
+const SUPABASE_URL = 'https://pjirgipfpwkfohjyfqcm.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqaXJnaXBmcHdrZm9oanlmcWNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NzIxMDAsImV4cCI6MjEwNTA0ODEwMH0.M6ExITdebAQHTaQX6QFAN17gxqwnLtqen5j9eCfJ5XM';
+function supabaseConfigured(){
+  return !SUPABASE_URL.includes('YOUR-PROJECT-REF') && !SUPABASE_ANON_KEY.includes('YOUR-ANON-PUBLIC-KEY');
+}
+async function saveRegistration(data){
+  if (!supabaseConfigured()) return false;
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/registrations`, {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':SUPABASE_ANON_KEY,
+        'Authorization':`Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer':'return=minimal'
+      },
+      body: JSON.stringify(data)
+    });
+    return res.ok;
+  }catch(e){ return false; }
+}
+async function fetchRegistrationStats(){
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_registration_stats`, {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'apikey':SUPABASE_ANON_KEY,
+      'Authorization':`Bearer ${SUPABASE_ANON_KEY}`
+    },
+    body:'{}'
+  });
+  if (!res.ok) throw new Error('Supabase fetch failed: ' + res.status);
+  return res.json();
+}
+
+/* ---------------- brand mark (real logo artwork) ---------------- */
+// Footer always sits on a dark background, so it always uses the white variant.
+document.getElementById('footerLogoImg').src = LOGO_WHITE;
+
+/* ---------------- toast ---------------- */
+let toastTimer;
+function toast(msg){
+  const el = document.getElementById('toastMsg');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> el.classList.remove('show'), 2600);
+}
+
+/* ---------------- theme + lang toggles ---------------- */
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeToggle').textContent = theme === 'dark' ? '☀️' : '🌙';
+  // Header sits on a background that flips with the theme, so its logo flips too.
+  document.getElementById('headerLogoImg').src = theme === 'dark' ? LOGO_WHITE : LOGO_GREEN;
+  localStorage.setItem(LS_KEYS.theme, theme);
+}
+function applyLangDom(){
+  document.documentElement.lang = LANG;
+  document.documentElement.dir = LANG === 'ar' ? 'rtl' : 'ltr';
+  document.getElementById('langToggle').textContent = LANG === 'ar' ? 'EN' : 'AR';
+  document.title = LANG === 'ar' ? 'FA Juniors — أرشيف المشاركين' : 'FA Juniors — Participant Archive';
+  document.querySelectorAll('[data-t]').forEach(el => { el.textContent = t(el.getAttribute('data-t')); });
+  localStorage.setItem('fj_lang', LANG);
+}
+document.getElementById('themeToggle').addEventListener('click', ()=>{
+  const cur = document.documentElement.getAttribute('data-theme');
+  applyTheme(cur === 'dark' ? 'light' : 'dark');
+  route(); // re-render charts with correct grid colors
+});
+document.getElementById('langToggle').addEventListener('click', ()=>{
+  LANG = LANG === 'ar' ? 'en' : 'ar';
+  applyLangDom();
+  refreshNavLabels();
+  route();
+});
+document.getElementById('hamburgerBtn').addEventListener('click', ()=>{
+  document.getElementById('mainNav').classList.toggle('open');
+});
+
+function refreshNavLabels(){
+  document.querySelectorAll('nav.main-links a[data-route]').forEach(a=>{
+    const r = a.getAttribute('data-route');
+    a.textContent = t('nav_'+r);
+  });
+}
+
+/* ---------------- router ---------------- */
+function showPage(html){ document.getElementById('app').innerHTML = html; }
+function setActiveNav(page){
+  document.querySelectorAll('nav.main-links a').forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('data-route') === page);
+  });
+}
+function route(){
+  document.getElementById('mainNav').classList.remove('open');
+  const hash = (location.hash || '#home').slice(1);
+  const [page] = hash.split('/');
+  refreshNavLabels();
+  if (page === 'about') { showPage(renderAbout()); }
+  else if (page === 'register') { showPage(renderRegister()); wireRegister(); }
+  else if (page === 'admin') {
+    if (!getSession()) { location.hash = '#home'; return; }
+    showPage(renderAdmin()); wireAdmin();
+  }
+  else { showPage(renderHome()); }
+  setActiveNav(page || 'home');
+  window.scrollTo({top:0});
+}
+window.addEventListener('hashchange', route);
+
+/* ---------------- HOME (campaign brief) ---------------- */
+function renderHome(){
+  return `
+  <section class="hero wedge-corner">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">${t('contest_eyebrow')}</span>
+        <h1>${t('contest_slogan')}</h1>
+        <p class="lead">${t('contest_lead')}</p>
+        <div class="hero-actions">
+          <a href="#register" class="btn btn-primary">${t('apply_btn')}</a>
+          <a href="#about" class="btn btn-outline" style="border-color:#fff;color:#fff;">${t('learn_more_btn')}</a>
+        </div>
+      </div>
+      <div class="hero-badge-logo"><img src="${LOGO_WHITE}" alt="FA Juniors"></div>
+    </div>
+  </section>
+
+  <section class="container" style="padding-block:44px;">
+    <div class="about-grid">
+      <div class="about-card">
+        <h3>${t('info_organizer_label')}</h3>
+        <p>${t('info_organizer_value')}</p>
+      </div>
+      <div class="about-card">
+        <h3>${t('info_age_label')}</h3>
+        <p>${t('info_age_value')}</p>
+        <h3 style="margin-top:18px;">${t('info_deadline_label')}</h3>
+        <p>${t('info_deadline_value')}</p>
+      </div>
+    </div>
+
+    <div class="section-title"><h2>${t('prizes_title')}</h2><p>${t('prizes_intro')}</p></div>
+    <div class="about-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+      <div class="about-card"><h3>${t('age_cat_1')}</h3><p>${t('prize_cert')} · ${t('prize_giftbag')}</p></div>
+      <div class="about-card"><h3>${t('age_cat_2')}</h3><p>${t('prize_cert')} · ${t('prize_giftbag')}</p></div>
+      <div class="about-card"><h3>${t('age_cat_3')}</h3><p>${t('prize_cert')} · ${t('prize_giftbag')}</p></div>
+      <div class="about-card"><h3>${t('age_cat_4')}</h3><p>${t('prize_cert')} · ${t('prize_giftbag')}</p></div>
+    </div>
+    <p style="text-align:center;max-width:60ch;margin-inline:auto;">${t('prize_mention')}</p>
+
+    <div style="text-align:center;margin-top:30px;">
+      <a href="#register" class="btn btn-primary">${t('apply_btn')}</a>
+    </div>
+  </section>`;
+}
+
+/* ---------------- REGISTER (pre-registration -> bridge to official link) ---------------- */
+function renderRegister(){
+  return `
+  <section class="container" style="padding-block:44px;max-width:640px;">
+    <div class="section-title"><h2>${t('register_title')}</h2><p>${t('register_lead')}</p></div>
+    <div id="registerError" class="form-error hidden"></div>
+    <form id="registerForm" class="form-grid">
+      <div class="field span2"><label>${t('register_name')} <span class="required-star">*</span></label><input required type="text" name="fullName" autocomplete="name"></div>
+      <div class="field"><label>${t('register_age')} <span class="required-star">*</span></label><input required type="number" min="5" max="19" name="age"></div>
+      <div class="field"><label>${t('register_email')} <span class="required-star">*</span></label><input required type="email" name="email" autocomplete="email"></div>
+      <div class="field"><label>${t('register_governorate')} <span class="required-star">*</span></label><input required type="text" name="governorate"></div>
+      <div class="field"><label>${t('register_school')} <span class="required-star">*</span></label><input required type="text" name="school"></div>
+      <div class="field span2"><button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">${t('register_submit')}</button></div>
+    </form>
+    <p class="hint">${t('register_note')}</p>
+  </section>`;
+}
+function wireRegister(){
+  const form = document.getElementById('registerForm');
+  if (!form) return;
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const errBox = document.getElementById('registerError');
+    errBox.classList.add('hidden');
+    const data = {
+      full_name: form.fullName.value.trim(),
+      age: Number(form.age.value) || null,
+      email: form.email.value.trim(),
+      governorate: form.governorate.value.trim(),
+      school: form.school.value.trim(),
+      source: new URLSearchParams(location.search).get('src') || null
+    };
+    if (!data.full_name || !data.email){
+      errBox.textContent = t('register_required_error');
+      errBox.classList.remove('hidden');
+      return;
+    }
+    const btn = form.querySelector('button[type=submit]');
+    btn.disabled = true;
+    btn.textContent = t('register_saving');
+    await saveRegistration(data); // never blocks the redirect below, even on failure
+    window.location.href = OFFICIAL_LINK;
+  });
+}
+
+/* ---------------- ABOUT ---------------- */
+function renderAbout(){
+  return `
+  <section class="hero wedge-corner about-hero">
+    <div class="container">
+      <span class="eyebrow">🌍 FAO</span>
+      <h1 style="color:#fff;">${t('about_hero_title')}</h1>
+      <p class="lead" style="margin-inline:auto;">${t('about_hero_lead')}</p>
+    </div>
+  </section>
+  <section class="container" style="padding-block:44px;">
+    <div class="about-grid">
+      <div class="about-card"><h3>${t('about_us_title')}</h3><p>${t('about_us_text')}</p></div>
+      <div class="about-card"><h3>${t('vision_title')}</h3><p>${t('vision_text')}</p>
+        <h3 style="margin-top:18px;">${t('mission_title')}</h3><p>${t('mission_text')}</p></div>
+    </div>
+
+    <div class="section-title"><h2>${t('team_title')}</h2></div>
+    <div class="org-chart">
+      <div class="org-node">${t('role_president')}</div>
+      <div class="org-node">${t('role_vp')}</div>
+      <div class="org-level">
+        <div class="org-node">${t('role_hr')}<br><small style="font-weight:600;color:var(--text-muted);">${t('role_headvice')}</small></div>
+        <div class="org-node">${t('role_social')}<br><small style="font-weight:600;color:var(--text-muted);">${t('role_headvice')}</small></div>
+        <div class="org-node">${t('role_event')}<br><small style="font-weight:600;color:var(--text-muted);">${t('role_headvice')}</small></div>
+        <div class="org-node">${t('role_ac')}<br><small style="font-weight:600;color:var(--text-muted);">${t('role_headvice')}</small></div>
+      </div>
+    </div>
+
+    <div class="section-title"><h2>${t('supporters_title')}</h2></div>
+    <div class="supporters-row">
+      <div class="supporter-badge"><div class="mark">FA</div><div>${t('supporter_famodel')}</div></div>
+      <div class="supporter-badge"><div class="mark">FAO</div><div>${t('supporter_fao')}</div></div>
+    </div>
+
+    <div class="contact-box">
+      <h3>${t('contact_title')}</h3>
+      <p>📧 fajuniorsteam@gmail.com &nbsp;·&nbsp; 📘 <a href="https://www.facebook.com/profile.php?id=61574361587772" target="_blank" rel="noopener" style="color:var(--leaf-600);font-weight:700;">Facebook: FA Juniors</a></p>
+    </div>
+  </section>`;
+}
+
+/* ---------------- HIDDEN ADMIN GATE ----------------
+   There is no visible login link anywhere in the UI. The only way to
+   reach the admin dashboard is: press and hold the thin handle tucked
+   against the right edge of the screen, then drag it toward the left
+   while still holding, which reveals a small password overlay. This
+   is a single fixed admin password — there is no username and no
+   user-management system; whoever knows the gesture and the password
+   gets full add/edit/delete rights. */
+const ADMIN_PASSWORD = 'fajuniors26';
+const GATE_HOLD_MS = 500;
+const GATE_DRAG_PX = 50;
+let gateGesture = null;
+
+function openAdminGate(){
+  if (getSession()) { location.hash = '#admin'; return; }
+  const overlay = document.getElementById('adminGateOverlay');
+  document.getElementById('adminGateLogoImg').src =
+    document.documentElement.getAttribute('data-theme') === 'dark' ? LOGO_WHITE : LOGO_GREEN;
+  document.getElementById('adminGateError').classList.add('hidden');
+  document.getElementById('adminGateForm').reset();
+  overlay.classList.remove('hidden');
+  setTimeout(()=> document.getElementById('adminGatePass').focus(), 0);
+}
+function closeAdminGate(){
+  document.getElementById('adminGateOverlay').classList.add('hidden');
+}
+function wireAdminGate(){
+  document.getElementById('adminGateCloseBtn').addEventListener('click', closeAdminGate);
+  document.getElementById('adminGateOverlay').addEventListener('click', (e)=>{
+    if (e.target.id === 'adminGateOverlay') closeAdminGate();
+  });
+  document.getElementById('adminGateForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const pass = document.getElementById('adminGatePass').value;
+    const errBox = document.getElementById('adminGateError');
+    if (pass === ADMIN_PASSWORD){
+      setSession({ role:'admin' });
+      closeAdminGate();
+      location.hash = '#admin';
+      route();
+    } else {
+      errBox.textContent = t('login_error');
+      errBox.classList.remove('hidden');
+    }
+  });
+
+  const handleEl = document.getElementById('adminGateHandle');
+  const resetGesture = ()=>{ if (gateGesture) clearTimeout(gateGesture.timer); gateGesture = null; };
+  handleEl.addEventListener('pointerdown', (e)=>{
+    e.preventDefault();
+    gateGesture = { startX:e.clientX, startY:e.clientY, longPress:false };
+    gateGesture.timer = setTimeout(()=>{ if (gateGesture) gateGesture.longPress = true; }, GATE_HOLD_MS);
+  });
+  handleEl.addEventListener('pointermove', (e)=>{
+    if (!gateGesture || !gateGesture.longPress) return;
+    const dx = e.clientX - gateGesture.startX;
+    const dy = Math.abs(e.clientY - gateGesture.startY);
+    if (dx <= -GATE_DRAG_PX && dy < 40){
+      resetGesture();
+      openAdminGate();
+    }
+  });
+  ['pointerup','pointercancel','pointerleave'].forEach(evt=>{
+    handleEl.addEventListener(evt, resetGesture);
+  });
+}
+
+/* ---------------- ADMIN ---------------- */
+function can(){ return !!getSession(); }
+function renderAdmin(){
+  return `
+  <section class="container admin-shell">
+    <aside class="admin-sidebar">
+      <button class="active">📊 ${t('stats_title')}</button>
+      <hr style="border-color:var(--border);margin:10px 0;">
+      <button id="logoutBtn">🚪 ${t('nav_logout')}</button>
+    </aside>
+    <div class="admin-panel" id="adminPanel"></div>
+  </section>`;
+}
+function adminPanelHtml(){
+  return `
+  <h3 style="margin-top:0;">${t('stats_title')}</h3>
+  <div id="statsBody"></div>`;
+}
+function statsLoadingHtml(){
+  return `<p class="hint">…</p>`;
+}
+function statsNotConfiguredHtml(){
+  return `<p class="hint">${t('stats_not_configured')}</p>`;
+}
+function statsErrorHtml(){
+  return `<p class="hint" style="color:#c0392b;">${t('stats_load_error')}</p>`;
+}
+let lastStatsChartData = null;
+function renderStatsBody(stats){
+  // fill in any of the last 14 days missing from the "daily" array with 0
+  const days = [];
+  for (let i = 13; i >= 0; i--){
+    const d = new Date(); d.setDate(d.getDate() - i);
+    days.push(d.toISOString().slice(0,10));
+  }
+  const dayCounts = Object.fromEntries(days.map(d => [d, 0]));
+  (stats.daily || []).forEach(row => { if (row.day in dayCounts) dayCounts[row.day] = row.count; });
+  lastStatsChartData = { days, dayCounts };
+
+  const byGov = stats.by_governorate || [];
+
+  return `
+  <div class="stats-grid" style="margin-bottom:26px;">
+    <div class="stat-card"><span class="num">${stats.total ?? 0}</span><span class="lbl">${t('stats_total')}</span></div>
+    <div class="stat-card"><span class="num">${stats.today ?? 0}</span><span class="lbl">${t('stats_today')}</span></div>
+  </div>
+  <div class="chart-card" style="margin-bottom:26px;">
+    <h3>${t('stats_daily_title')}</h3>
+    <div class="chart-wrap"><canvas id="clicksChart"></canvas></div>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="admin-table">
+      <thead><tr><th>${t('stats_source')}</th><th>${t('stats_count')}</th></tr></thead>
+      <tbody>${byGov.map(r=>`<tr><td>${escapeHtml(r.governorate)}</td><td>${r.count}</td></tr>`).join('') || `<tr><td colspan="2">—</td></tr>`}</tbody>
+    </table>
+  </div>
+  <p class="hint">${t('stats_view_full_note')}</p>`;
+}
+let clicksChartInst = null;
+function drawClicksChart(days, dayCounts){
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const gridColor = isDark ? 'rgba(255,255,255,.08)' : 'rgba(8,33,15,.08)';
+  const textColor = isDark ? '#cfe0d5' : '#4b5c50';
+  const ctx = document.getElementById('clicksChart');
+  if (!ctx) return;
+  if (clicksChartInst) clicksChartInst.destroy();
+  clicksChartInst = new Chart(ctx, {
+    type:'bar',
+    data:{ labels:days, datasets:[{ data:days.map(d=>dayCounts[d]), backgroundColor:'#1f7a41', borderRadius:6, maxBarThickness:28 }] },
+    options:{
+      plugins:{ legend:{ display:false } },
+      maintainAspectRatio:false,
+      scales:{
+        x:{ grid:{ display:false }, ticks:{ color:textColor, font:{family:'Cairo'}, maxRotation:0, autoSkip:true } },
+        y:{ beginAtZero:true, ticks:{ stepSize:1, color:textColor, font:{family:'Cairo'} }, grid:{ color:gridColor } }
+      }
+    }
+  });
+}
+async function loadStats(){
+  const body = document.getElementById('statsBody');
+  if (!body) return;
+  if (!supabaseConfigured()){
+    body.innerHTML = statsNotConfiguredHtml();
+    return;
+  }
+  body.innerHTML = statsLoadingHtml();
+  try{
+    const stats = await fetchRegistrationStats();
+    body.innerHTML = renderStatsBody(stats);
+    drawClicksChart(lastStatsChartData.days, lastStatsChartData.dayCounts);
+  }catch(e){
+    body.innerHTML = statsErrorHtml();
+  }
+}
+function wireAdmin(){
+  const panel = document.getElementById('adminPanel');
+  panel.innerHTML = adminPanelHtml();
+  loadStats();
+  document.getElementById('logoutBtn').addEventListener('click', ()=>{
+    clearSession();
+    toast(t('toast_logged_out'));
+    location.hash = '#home';
+  });
+}
+
+/* ---------------- init ---------------- */
+(function init(){
+  applyTheme(localStorage.getItem(LS_KEYS.theme) || 'light');
+  applyLangDom();
+  wireAdminGate();
+  route();
+})();
+</script>
+</body>
+</html>
