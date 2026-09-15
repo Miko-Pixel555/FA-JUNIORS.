@@ -600,8 +600,9 @@ function escapeHtml(str){
      $$;
      grant execute on function get_registration_stats() to anon; */
 const OFFICIAL_LINK = 'https://www.fao.org/world-food-day/contest/ar';
-const SUPABASE_URL = 'https://YOUR-PROJECT-REF.supabase.co'; // TODO: ضعي رابط مشروعك من Supabase هنا
-const SUPABASE_ANON_KEY = 'YOUR-ANON-PUBLIC-KEY'; // TODO: ضعي الـ anon public key هنا
+const SUPABASE_URL = 'https://pjirgipfpwkfohjyfqcm.supabase.co';
+const; // TODO: ضعي رابط مشروعك من Supabase هنا
+SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqaXJnaXBmcHdrZm9oanlmcWNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NzIxMDAsImV4cCI6MjEwNTA0ODEwMH0.M6ExITdebAQHTaQX6QFAN17gxqwnLtqen5j9eCfJ5XM';; // TODO: ضعي الـ anon public key هنا
 function supabaseConfigured(){
   return !SUPABASE_URL.includes('YOUR-PROJECT-REF') && !SUPABASE_ANON_KEY.includes('YOUR-ANON-PUBLIC-KEY');
 }
